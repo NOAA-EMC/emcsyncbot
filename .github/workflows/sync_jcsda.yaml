@@ -19,12 +19,11 @@ jobs:
         branch: ['develop']
 
     steps:
-    - name: Checkout forked repository and branch
+    - name: Checkout ${{ matrix.organization }}/${{ matrix.repository }}
       uses: actions/checkout@v2
       with:
         #persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         #fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-        token: ${WORKFLOW_TOKEN}
         repository: noaa-emc/${{ matrix.repository }}
         path: ${{ matrix.repository }}-${{ matrix.branch }}
         ref: ${{ matrix.branch }}
