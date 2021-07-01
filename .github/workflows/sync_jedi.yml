@@ -9,7 +9,7 @@ jobs:
     name: Sync with upstream
     strategy:
       matrix:
-        organization: ['jcsda-internal']
+        organization: ['jcsda']
           #repository: ['saber', 'ioda', 'ufo', 'fv3-jedi', 'fv3-bundle']
         repository: ['ufo']
         branch: ['develop']
