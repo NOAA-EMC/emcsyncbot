@@ -54,7 +54,8 @@ jobs:
           echo "locally modifying config ..."
           git config --local --unset-all "http.https://github.com/.extraheader"
           echo "Pushing branch to origin"
-          git push origin ${{ matrix.branch }}
+          #git push origin ${{ matrix.branch }}
+          git push https://${WORKFLOW_USER}:${WORKFLOW_TOKEN}@github.com/noaa-emc/${{ matrix.repository }}.git $GITHUB_REF
           echo "Push successful"
         fi
 
