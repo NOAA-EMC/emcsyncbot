@@ -30,6 +30,8 @@ jobs:
         upstream_branch: ${{ matrix.branch }}
         target_branch: ${{ matrix.branch }}
         workspace: ${{ matrix.repository }}-${{ matrix.branch }}
+        git_user: 'emcbot'
+        git_email: 'emcbot@users.noreply.github.com'
 
     - name: Check for new commits
       if: steps.sync.outputs.has_new_commits
