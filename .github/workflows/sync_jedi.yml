@@ -30,8 +30,8 @@ jobs:
         upstream_branch: ${{ matrix.branch }}
         target_branch: ${{ matrix.branch }}
         workspace: ${{ matrix.repository }}-${{ matrix.branch }}
-        git_user: 'aerorahul'
-        git_email: 'aerorahul@users.noreply.github.com'
+        git_user: 'emcbot'
+        git_email: 'emcbot@users.noreply.github.com'
         #github_token: ${{ secrets.JEDI_SYNC_TOKEN }}
 
     - name: Check for new commits
