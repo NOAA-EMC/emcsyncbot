@@ -51,6 +51,8 @@ jobs:
           echo "Syncing ..."
           git pull --no-edit upstream ${{ matrix.branch }}
           echo "Sync successful"
+          echo "locally modifying config ..."
+          git config --local --unset-all "http.https://github.com/.extraheader"
           echo "Pushing branch to origin"
           git push origin ${{ matrix.branch }}
           echo "Push successful"
