@@ -32,6 +32,7 @@ jobs:
         workspace: ${{ matrix.repository }}-${{ matrix.branch }}
         git_user: 'emcbot'
         git_email: 'emcbot@users.noreply.github.com'
+        github_token: ${{ secrets.JEDI_SYNC_TOKEN }}
 
     - name: Check for new commits
       if: steps.sync.outputs.has_new_commits
