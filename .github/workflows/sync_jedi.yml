@@ -18,6 +18,8 @@ jobs:
     - name: Checkout forked repository and branch
       uses: actions/checkout@v2
       with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
         repository: noaa-emc/${{ matrix.repository }}
         path: ${{ matrix.repository }}-${{ matrix.branch }}
         ref: ${{ matrix.branch }}
@@ -32,7 +34,7 @@ jobs:
         workspace: ${{ matrix.repository }}-${{ matrix.branch }}
         git_user: 'emcbot'
         git_email: 'emcbot@users.noreply.github.com'
-        #github_token: ${{ secrets.JEDI_SYNC_TOKEN }}
+        github_token: ${{ secrets.JEDI_SYNC_TOKEN }}
 
     - name: Check for new commits
       if: steps.sync.outputs.has_new_commits
