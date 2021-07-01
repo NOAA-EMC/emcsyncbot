@@ -1,0 +1,39 @@
+on:
+  schedule:
+    - cron:  '*/5 * * * *' # every X minutes
+  workflow_dispatch: # click the button on Github repo!
+
+jobs:
+  sync_with_upstream:
+    runs-on: ubuntu-latest
+    name: Sync with upstream
+    strategy:
+      matrix:
+        organization: ['jcsda-internal']
+          #repository: ['saber', 'ioda', 'ufo', 'fv3-jedi', 'fv3-bundle']
+        repository: ['ufo']
+        branch: ['develop']
+
+    steps:
+    - name: Checkout forked repository and branch
+      uses: actions/checkout@v2
+      with:
+        repository: noaa-emc/${{ matrix.repository }}
+        path: ${{ matrix.repository }}-${{ matrix.branch }}
+        ref: ${{ matrix.branch }}
+
+    - name: Pull upstream changes
+      id: sync
+      uses: aerorahul/Fork-Sync-With-Upstream-action@custom_directory
+      with:
+        upstream_repository: ${{ matrix.organization }}/${{ matrix.repository }}
+        upstream_branch: ${{ matrix.branch }}
+        target_branch: ${{ matrix.branch }}
+        workspace: ${{ matrix.repository }}-${{ matrix.branch }}
+
+    - name: Check for new commits
+      if: steps.sync.outputs.has_new_commits
+      run: echo "There were new commits"
+
+    - name: Timestamp
+      run: date
