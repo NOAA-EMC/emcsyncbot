@@ -11,3 +11,5 @@ Presently implemented workflows including automatic syncing of forks of Github o
   * [ufo](https://github.com/jcsda/ufo)
   * [fv3-jedi](https://github.com/jcsda/fv3-jedi)
   * [fv3-bundle](https://github.com/jcsda/fv3-bundle)
+* [sync_hycom.yaml](./.github/workflows/sync_hycom.yaml): This workflow syncs the `master` branches in [NOAA-EMC](https://github.com/noaa-emc) fork from the following public [HYCOM](https://github.com/hycom) repositories :
+  * [HYCOM-src](https://github.com/hycom/hycom-src)
