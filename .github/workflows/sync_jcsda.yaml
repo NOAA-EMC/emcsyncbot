@@ -11,6 +11,7 @@ jobs:
       WORKFLOW_USER: 'emcbot'
       WORKFLOW_EMAIL: 'emcbot@users.noreply.github.com'
       WORKFLOW_TOKEN: ${{ secrets.JEDI_SYNC_TOKEN }}
+      FORK_ORGANIZATION: 'noaa-emc'
     strategy:
       matrix:
         organization: ['jcsda']
@@ -18,6 +19,9 @@ jobs:
         branch: ['develop']
 
     steps:
+    - name: Checkout emcsyncbot
+      uses: actions/checkout@v2
+
     - name: Checkout ${{ matrix.organization }}/${{ matrix.repository }}@${{ matrix.branch }}
       uses: actions/checkout@v2
       with:
@@ -27,31 +31,8 @@ jobs:
 
     - name: Pull upstream changes
       run: |
-        cd ${{ matrix.repository }}-${{ matrix.branch }}
-        git config --global user.name  "${WORKFLOW_USER}"
-        git config --global user.email "${WORKFLOW_EMAIL}"
-        echo "Adding remotes ..."
-        git remote add upstream https://github.com/${{ matrix.organization }}/${{ matrix.repository }}.git
-        echo "Remotes added:"
-        git remote -v
-        git fetch upstream ${{ matrix.branch }}
-        LOCAL_COMMIT_HASH=$(git rev-parse ${{ matrix.branch }})
-        UPSTREAM_COMMIT_HASH=$(git rev-parse upstream/${{ matrix.branch }})
-        if [[ "${LOCAL_COMMIT_HASH}" == "${UPSTREAM_COMMIT_HASH}" ]]; then
-          echo "::set-output name=has_new_commits::false"
-          echo "No new commits to sync"
-        else
-          echo "::set-output name=has_new_commits::true"
-          echo "New commits being synced:"
-          git log upstream/${{ matrix.branch }} "${LOCAL_COMMIT_HASH}"..HEAD --pretty=oneline
-          echo "Syncing ..."
-          git pull --no-edit upstream ${{ matrix.branch }}
-          echo "Sync successful"
-          git config --local --unset-all "http.https://github.com/.extraheader"
-          echo "Pushing branch to origin ..."
-          git push https://${WORKFLOW_USER}:${WORKFLOW_TOKEN}@github.com/noaa-emc/${{ matrix.repository }}.git $GITHUB_REF
-          echo "Push successful"
-        fi
+        cd ${GITHUB_WORKSPACE}
+        bash github_sync.sh ${{ matrix.organization }} ${{ matrix.repository }} ${{ matrix.branch }}
 
     - name: Timestamp
       run: date
