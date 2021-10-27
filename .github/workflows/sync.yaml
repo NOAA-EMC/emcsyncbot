@@ -19,6 +19,9 @@ jobs:
         branch: ['develop']
 
     steps:
+    - name: Checkout emcsyncbot
+      uses: actions/checkout@v2
+
     - name: Checkout ${{ matrix.organization }}/${{ matrix.repository }}@${{ matrix.branch }}
       uses: actions/checkout@v2
       with:
@@ -28,7 +31,8 @@ jobs:
 
     - name: Pull upstream changes
       run: |
-        bash github_sync.sh ${{ matrix.organization }}${{ matrix.repository }} ${{ matrix.branch }}
+        cd ${GITHUB_WORKSPACE}
+        bash github_sync.sh ${{ matrix.organization }} ${{ matrix.repository }} ${{ matrix.branch }}
 
     - name: Timestamp
       run: date
