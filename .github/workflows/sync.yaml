@@ -1,0 +1,34 @@
+on:
+  schedule:
+    - cron:  '*/5 * * * *' # every X minutes
+  workflow_dispatch: # click the button on Github repo!
+
+jobs:
+  sync_with_upstream:
+    runs-on: ubuntu-latest
+    name: Sync with upstream
+    env:
+      WORKFLOW_USER: 'emcbot'
+      WORKFLOW_EMAIL: 'emcbot@users.noreply.github.com'
+      WORKFLOW_TOKEN: ${{ secrets.JEDI_SYNC_TOKEN }}
+      FORK_ORGANIZATION: 'noaa-emc'
+    strategy:
+      matrix:
+        organization: ['jcsda']
+        repository: ['oops', 'saber', 'ioda', 'ufo', 'fv3-jedi', 'fv3-bundle']
+        branch: ['develop']
+
+    steps:
+    - name: Checkout ${{ matrix.organization }}/${{ matrix.repository }}@${{ matrix.branch }}
+      uses: actions/checkout@v2
+      with:
+        repository: noaa-emc/${{ matrix.repository }}
+        path: ${{ matrix.repository }}-${{ matrix.branch }}
+        ref: ${{ matrix.branch }}
+
+    - name: Pull upstream changes
+      run: |
+        bash github_sync.sh ${{ matrix.organization }}${{ matrix.repository }} ${{ matrix.branch }}
+
+    - name: Timestamp
+      run: date
