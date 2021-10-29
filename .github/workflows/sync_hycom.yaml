@@ -32,6 +32,7 @@ jobs:
     - name: Pull upstream changes
       run: |
         cd ${GITHUB_WORKSPACE}
+        echo ${GITHUB_REF}
         bash github_sync.sh ${{ matrix.organization }} ${{ matrix.repository }} ${{ matrix.branch }}
 
     - name: Timestamp

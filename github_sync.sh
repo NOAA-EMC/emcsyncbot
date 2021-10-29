@@ -48,7 +48,7 @@ else
   git config --local --unset-all "http.https://github.com/.extraheader"
 
   echo -e "\nPushing branch to origin ..."
-  git push https://${WORKFLOW_USER}:${WORKFLOW_TOKEN}@github.com/${FORK}/${REPOSITORY}.git $GITHUB_REF
+  git push https://${WORKFLOW_USER}:${WORKFLOW_TOKEN}@github.com/${FORK}/${REPOSITORY}.git ${BRANCH}
   echo -e "\nPush successful"
 
 fi
