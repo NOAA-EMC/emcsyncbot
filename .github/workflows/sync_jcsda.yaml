@@ -11,7 +11,7 @@ jobs:
       WORKFLOW_USER: 'emcbot'
       WORKFLOW_EMAIL: 'emcbot@users.noreply.github.com'
       WORKFLOW_TOKEN: ${{ secrets.JEDI_SYNC_TOKEN }}
-      FORK_ORGANIZATION: 'noaa-emc'
+      FORK: 'noaa-emc'
     strategy:
       matrix:
         organization: ['jcsda']
@@ -25,7 +25,7 @@ jobs:
     - name: Checkout ${{ matrix.organization }}/${{ matrix.repository }}@${{ matrix.branch }}
       uses: actions/checkout@v2
       with:
-        repository: noaa-emc/${{ matrix.repository }}
+        repository: ${FORK}/${{ matrix.repository }}
         path: ${{ matrix.repository }}-${{ matrix.branch }}
         ref: ${{ matrix.branch }}
 

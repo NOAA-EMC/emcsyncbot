@@ -8,14 +8,15 @@ REPOSITORY=$2
 BRANCH=$3
 
 # Set in upstream environment.
-# WORKFLOW_USER
-# WORKFLOW_EMAIL
-# WORKFLOW_TOKEN
-
-# Defaults.
-FORK_ORGANIZATION=${FORK_ORGANIZATION:-"noaa-emc"}
+# WORKFLOW_USER  - 'mygithubusername'
+# WORKFLOW_EMAIL - 'mygithubuseremail'
+# WORKFLOW_TOKEN - secret 'SECRET'
+# FORK           - Fork to sync
 
 cd ${REPOSITORY}-${BRANCH}
+
+echo -e "\nBranch:"
+git branch
 
 git config --global user.name  "${WORKFLOW_USER}"
 git config --global user.email "${WORKFLOW_EMAIL}"
@@ -47,7 +48,7 @@ else
   git config --local --unset-all "http.https://github.com/.extraheader"
 
   echo -e "\nPushing branch to origin ..."
-  git push https://${WORKFLOW_USER}:${WORKFLOW_TOKEN}@github.com/${FORK_ORGANIZATION}/${REPOSITORY}.git $GITHUB_REF
+  git push https://${WORKFLOW_USER}:${WORKFLOW_TOKEN}@github.com/${FORK}/${REPOSITORY}.git $GITHUB_REF
   echo -e "\nPush successful"
 
 fi
