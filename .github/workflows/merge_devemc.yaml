@@ -12,7 +12,7 @@ jobs:
     env:
       WORKFLOW_USER: 'emcbot'
       WORKFLOW_EMAIL: 'emcbot@users.noreply.github.com'
-      WORKFLOW_TOKEN: ${{ secrets.JEDI_SYNC_TOKEN }}
+      WORKFLOW_TOKEN: ${{ secrets.UFS_SYNC_TOKEN }}
       FORK: 'noaa-emc'
     strategy:
       matrix:
