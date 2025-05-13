@@ -1,0 +1,44 @@
+name: Merge develop into dev/emc
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # every 15 minutes
+  workflow_dispatch:        # allows manual trigger
+
+jobs:
+  merge_branches:
+    name: Merge develop -> dev/emc
+    runs-on: ubuntu-latest
+    env:
+      WORKFLOW_USER: 'emcbot'
+      WORKFLOW_EMAIL: 'emcbot@users.noreply.github.com'
+      WORKFLOW_TOKEN: ${{ secrets.JEDI_SYNC_TOKEN }}
+      FORK: 'noaa-emc'
+    strategy:
+      matrix:
+        repository: ['soca']
+
+    steps:
+    - name: Checkout dev/emc
+      uses: actions/checkout@v2
+      with:
+        repository: noaa-emc/${{ matrix.repository }}
+        ref: dev/emc
+        token: ${{ secrets.JEDI_SYNC_TOKEN }}
+        path: ${{ matrix.repository }}-devemc
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "emcbot"
+        git config --global user.email "emcbot@users.noreply.github.com"
+
+    - name: Fetch and merge develop
+      run: |
+        cd ${{ matrix.repository }}-devemc
+        git fetch origin develop
+        git merge origin/develop --no-edit || true
+
+    - name: Push changes to dev/emc
+      run: |
+        cd ${{ matrix.repository }}-devemc
+        git push origin HEAD:dev/emc

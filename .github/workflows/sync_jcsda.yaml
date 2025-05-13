@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         organization: ['jcsda']
-        repository: ['oops', 'saber', 'ioda', 'ufo', 'fv3-jedi', 'fv3-bundle']
+        repository: ['oops', 'saber', 'ioda', 'ufo', 'fv3-jedi', 'fv3-bundle', 'soca']
         branch: ['develop']
 
     steps:
